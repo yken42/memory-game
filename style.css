@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 55%;
+  border: 2px dashed blue;
+  margin: 0 auto;
+  margin-top: 1rem;
+  text-align: center;
+  min-height: 95vh;
+}
+
+
+.title {
+  color: rgb(26, 158, 205);
+  margin: 5rem;
+  font-family: 'Amatic SC', sans-serif;
+  font-size: 4rem;
+}
+
+.cards-box {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: 25%;
+  margin: 1rem;
+  border: 1px solid black;
+  height: 10rem;
+}
+
+.marked-card{
+  border: 4px solid red;
+}
+
+.color-picker{
+  width: 100%;
+  height: 200px;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+  
+  padding: 1rem 0;
+
+  
+}
+
+.color-picker_box{
+  margin: 5px;
+  width: 12rem;
+  height: 3rem;
+  border: 1px solid black;
+}
+
