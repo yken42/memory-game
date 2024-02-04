@@ -75,7 +75,6 @@ function init(timer) {
         card.style.backgroundColor = color;
       }, timer * i);
     });
-
     //hide cards after showcasing all three cards
     uniqueColors.forEach((color, i) => {
       setTimeout(() => {
@@ -96,45 +95,39 @@ function init(timer) {
       //converts the picked color from rgb to hex for comparisson
       const clickedColorHex = rgbToHex(e.target.style.backgroundColor);
 
-      if (guesses < 2) {
+      if (guesses != 2) {
         if (clickedColorHex != generatedColors[guesses]) {
           //check if picked color is matched for the card
           card[guesses].style.backgroundColor = clickedColorHex;
           setTimeout(() => {
-            endGame(isWin); //sends lost prompt
+            endGame(isWin); //sends lose prompt
           }, 100);
         } else {
-          card[guesses].style.backgroundColor = clickedColorHex;
           card[guesses].classList.remove("marked-card");
-          guesses++;
+          card[guesses++].style.backgroundColor = clickedColorHex;
           card[guesses].classList.add("marked-card");
         }
       } else {
-        if (clickedColorHex != generatedColors[guesses]) {
-          card[guesses].style.backgroundColor = clickedColorHex;
-          setTimeout(() => {
-            isWin = false;
-            endGame(isWin);
-          }, 100);
-        } else {
-          card[guesses].style.backgroundColor = clickedColorHex;
-          setTimeout(() => {
-            isWin = true;
-            endGame(isWin);
-          }, 100);
-        }
+        card[guesses].style.backgroundColor = clickedColorHex;
+        setTimeout(() => {
+          isWin = true;
+          endGame(isWin);
+        }, 100);
       }
     });
-  }, 3000);
+  }, timer);
 }
 
 //initialize the game depends on game difficulty
 level.addEventListener("click", (e) => {
-  if (e.target.classList.contains("easy")) {          //EASY
+  if (e.target.classList.contains("easy")) {
+    //EASY
     init(1000);
-  } else if (e.target.classList.contains("medium")) { //MEDIUM
+  } else if (e.target.classList.contains("medium")) {
+    //MEDIUM
     init(600);
-  } else {                                            //HARD
+  } else {
+    //HARD
     init(200);
   }
 });
