@@ -1,6 +1,8 @@
 const colorPicker = document.querySelector(".color-picker_box");
 const color = document.querySelector(".color-picker");
 const startBtn = document.querySelector(".start-btn");
+let guesses = 0;
+let isWin = false;
 
 //All possible colors for the game
 const colorsList = [
@@ -59,49 +61,11 @@ function rgbToHex(rgb) {
   return hexValue;
 }
 
-let generatedColors = generateRandom(colorsList.slice());
-let guesses = 0;
-let won = false;
-
-setTimeout(() => {
-  color.addEventListener("click", (e) => {
-    let card = document.querySelectorAll(".card");
-    const clickedColorHex = rgbToHex(e.target.style.backgroundColor);
-    if (guesses < 2) {
-      if (clickedColorHex != generatedColors[guesses]) {
-        card[guesses].style.backgroundColor = clickedColorHex;
-        setTimeout(() => {
-          endGame(won);
-        }, 100);
-      } else {
-        card[guesses].style.backgroundColor = clickedColorHex;
-        card[guesses].classList.remove("marked-card");
-        guesses++;
-        card[guesses].classList.add("marked-card");
-      }
-    } else {
-      if (clickedColorHex != generatedColors[guesses]) {
-        card[guesses].style.backgroundColor = clickedColorHex;
-        setTimeout(() => {
-          won = false;
-          endGame(won);
-        }, 100);
-      } else {
-        card[guesses].style.backgroundColor = clickedColorHex;
-        setTimeout(() => {
-          won = true;
-          endGame(won);
-        }, 100);
-      }
-    }
-  });
-}, 3000);
-
 function endGame(win) {
   let message;
 
   if (win) {
-    message = "Congratulations, you Won! \uD83C\uDF8A \nplay again?";
+    message = "Congratulations, you won! \uD83C\uDF8A \nplay again?";
   } else {
     message = "You Lost! \u274C\nplay again?";
   }
@@ -112,3 +76,53 @@ function endGame(win) {
     window.location.href = "http://www.google.com";
   }
 }
+
+function createColorsPick() {
+  for (let i = 0; i <= colorsList.length - 1; i++) {
+    let colorOption = document.createElement("li");
+    colorOption.classList.add("color-picker_box");
+    colorOption.style.backgroundColor = colorsList[i];
+    color.appendChild(colorOption);
+  }
+}
+
+function init() {
+  createColorsPick();
+  let generatedColors = generateRandom(colorsList.slice());
+  setTimeout(() => {
+    color.addEventListener("click", (e) => {
+      let card = document.querySelectorAll(".card");
+      const clickedColorHex = rgbToHex(e.target.style.backgroundColor);
+      if (guesses < 2) {
+        if (clickedColorHex != generatedColors[guesses]) {
+          card[guesses].style.backgroundColor = clickedColorHex;
+          setTimeout(() => {
+            endGame(isWin);
+          }, 100);
+        } else {
+          card[guesses].style.backgroundColor = clickedColorHex;
+          card[guesses].classList.remove("marked-card");
+          guesses++;
+          card[guesses].classList.add("marked-card");
+        }
+      } else {
+        if (clickedColorHex != generatedColors[guesses]) {
+          card[guesses].style.backgroundColor = clickedColorHex;
+          setTimeout(() => {
+            isWin = false;
+            endGame(isWin);
+          }, 100);
+        } else {
+          card[guesses].style.backgroundColor = clickedColorHex;
+          setTimeout(() => {
+            isWin = true;
+            endGame(isWin);
+          }, 100);
+        }
+      }
+    });
+  }, 3000);
+}
+
+//initialize the game
+init();
