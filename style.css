@@ -13,13 +13,18 @@
   margin-top: 1rem;
   text-align: center;
   min-height: 95vh;
+  font-family: "Amatic SC", sans-serif;
 }
 
 .title {
   color: rgb(26, 158, 205);
-  margin: 5rem;
-  font-family: "Amatic SC", sans-serif;
+  margin: 3rem;
+
   font-size: 4rem;
+}
+
+.difficulty{
+  font-size: 2rem;
 }
 
 .cards-box {
@@ -57,4 +62,44 @@
   width: 12rem;
   height: 3rem;
   border: 1px solid black;
+}
+
+.levels {
+  margin-bottom: 2rem;
+}
+
+.level {
+  width: 10rem;
+  border-radius: 11px;
+  border: 2px solid grey;
+  padding: 15px;
+  color: #ffffff;
+  display: inline-block;
+  text-align: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.easy {
+  background: #15d798;
+}
+
+.easy:hover {
+  background: #13ab7b;
+}
+
+.medium {
+  background: orange;
+}
+
+.medium:hover {
+  background: rgb(198, 129, 2);
+}
+
+.hard {
+  background-color: red;
+}
+
+.hard:hover {
+  background: rgb(201, 0, 0);
 }

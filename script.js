@@ -1,6 +1,7 @@
 const colorPicker = document.querySelector(".color-picker_box");
 const color = document.querySelector(".color-picker");
 const startBtn = document.querySelector(".start-btn");
+const level = document.querySelector(".levels");
 let guesses = 0;
 let isWin = false;
 
@@ -20,36 +21,7 @@ const colorsList = [
   "#0af89d",
 ];
 
-function generateRandom(arr) {
-  //create a new array of a randomly generated colors from the colors array
-  const shuffledArray = arr.slice().sort(() => Math.random() - 0.5);
-  const uniqueColors = shuffledArray.slice(0, 3);
-
-  //loop through the new generated colors array and assign color to each card with a 1 second delay
-  uniqueColors.forEach((color, i) => {
-    setTimeout(() => {
-      let card = document.querySelectorAll(".card")[i];
-      card.style.backgroundColor = color;
-    }, 1000 * i);
-  });
-
-  //hide cards after showcasing all three cards
-  hideCards(uniqueColors);
-
-  return uniqueColors;
-}
-
-function hideCards(arr) {
-  arr.forEach((color, i) => {
-    setTimeout(() => {
-      let card = document.querySelectorAll(".card")[i];
-      card.style.backgroundColor = "white";
-    }, 3000);
-  });
-}
-
 //converts rgb to hex code
-//COPIED
 function rgbToHex(rgb) {
   const rgbArray = rgb.split(/\D+/).filter(Boolean);
 
@@ -61,6 +33,7 @@ function rgbToHex(rgb) {
   return hexValue;
 }
 
+//prompting message depends on win state
 function endGame(win) {
   let message;
 
@@ -77,6 +50,7 @@ function endGame(win) {
   }
 }
 
+//create the color list picking options
 function createColorsPick() {
   for (let i = 0; i <= colorsList.length - 1; i++) {
     let colorOption = document.createElement("li");
@@ -86,18 +60,49 @@ function createColorsPick() {
   }
 }
 
-function init() {
-  createColorsPick();
+createColorsPick();
+
+//init function, gets timer as parameter depends on difficulty
+function init(timer) {
+  function generateRandom(arr) {
+    //create a new array of a randomly generated colors from the colors list
+    const shuffledArray = arr.slice().sort(() => Math.random() - 0.5);
+    const uniqueColors = shuffledArray.slice(0, 3);
+
+    //loop through the new generated colors array and assign color to each card
+    uniqueColors.forEach((color, i) => {
+      setTimeout(() => {
+        let card = document.querySelectorAll(".card")[i];
+        card.style.backgroundColor = color;
+      }, timer * i);
+    });
+
+    //hide cards after showcasing all three cards
+    uniqueColors.forEach((color, i) => {
+      setTimeout(() => {
+        let card = document.querySelectorAll(".card")[i];
+        card.style.backgroundColor = "white";
+      }, timer * 3);
+    });
+
+    //return the generated guessing colors
+    return uniqueColors;
+  }
+
   let generatedColors = generateRandom(colorsList.slice());
   setTimeout(() => {
     color.addEventListener("click", (e) => {
       let card = document.querySelectorAll(".card");
+
+      //converts the picked color from rgb to hex for comparisson
       const clickedColorHex = rgbToHex(e.target.style.backgroundColor);
+
       if (guesses < 2) {
         if (clickedColorHex != generatedColors[guesses]) {
+          //check if picked color is matched for the card
           card[guesses].style.backgroundColor = clickedColorHex;
           setTimeout(() => {
-            endGame(isWin);
+            endGame(isWin); //sends lost prompt
           }, 100);
         } else {
           card[guesses].style.backgroundColor = clickedColorHex;
@@ -124,5 +129,13 @@ function init() {
   }, 3000);
 }
 
-//initialize the game
-init();
+//initialize the game depends on game difficulty
+level.addEventListener("click", (e) => {
+  if (e.target.classList.contains("easy")) {          //EASY
+    init(1000);
+  } else if (e.target.classList.contains("medium")) { //MEDIUM
+    init(600);
+  } else {                                            //HARD
+    init(200);
+  }
+});
