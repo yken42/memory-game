@@ -75,6 +75,7 @@ function init(timer) {
         card.style.backgroundColor = color;
       }, timer * i);
     });
+
     //hide cards after showcasing all three cards
     uniqueColors.forEach((color, i) => {
       setTimeout(() => {
@@ -96,23 +97,33 @@ function init(timer) {
       const clickedColorHex = rgbToHex(e.target.style.backgroundColor);
 
       if (guesses != 2) {
+        console.log(guesses);
         if (clickedColorHex != generatedColors[guesses]) {
           //check if picked color is matched for the card
           card[guesses].style.backgroundColor = clickedColorHex;
           setTimeout(() => {
-            endGame(isWin); //sends lose prompt
+            endGame(isWin); //sends lost prompt
           }, 100);
         } else {
+          card[guesses].style.backgroundColor = clickedColorHex;
           card[guesses].classList.remove("marked-card");
-          card[guesses++].style.backgroundColor = clickedColorHex;
+          guesses++;
           card[guesses].classList.add("marked-card");
         }
       } else {
-        card[guesses].style.backgroundColor = clickedColorHex;
-        setTimeout(() => {
-          isWin = true;
-          endGame(isWin);
-        }, 100);
+        if (clickedColorHex != generatedColors[guesses]) {
+          card[guesses].style.backgroundColor = clickedColorHex;
+          setTimeout(() => {
+            isWin = false;
+            endGame(isWin);
+          }, 100);
+        } else {
+          card[guesses].style.backgroundColor = clickedColorHex;
+          setTimeout(() => {
+            isWin = true;
+            endGame(isWin);
+          }, 100);
+        }
       }
     });
   }, timer);
