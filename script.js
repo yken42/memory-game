@@ -1,6 +1,5 @@
 const colorPicker = document.querySelector(".color-picker_box");
 const color = document.querySelector(".color-picker");
-const startBtn = document.querySelector(".start-btn");
 const level = document.querySelector(".levels");
 let guesses = 0;
 let isWin = false;
